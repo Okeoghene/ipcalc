@@ -1,18 +1,16 @@
-from re import subn
-
-
-subnet_mask = '255.255.255.0' #currently acting as the subnet_mask input
+subnet_mask = '256.255.255.0' #currently acting as the subnet_mask input
 
 subnet_mask = subnet_mask.split('.') #This converts the input to a list
 
-if subnet_mask != []:
+values = [0, 128, 192, 224, 240, 248, 252, 254, 255]
+
+
+if subnet_mask == []:
+    net_mask = subnet_mask
+elif len(subnet_mask) != 4:
+    net_mask = subnet_mask
+elif subnet_mask[octect] not in values:
     net_mask = subnet_mask
 
-print(len(net_mask))
 
-net_mask = ','.join(net_mask)
-
-print(len(net_mask))
-
-#for items in net_mask:
-#    items = int(items)
+print(net_mask)
