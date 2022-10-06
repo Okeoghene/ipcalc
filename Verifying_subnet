@@ -1,0 +1,18 @@
+from re import subn
+
+
+subnet_mask = '255.255.255.0' #currently acting as the subnet_mask input
+
+subnet_mask = subnet_mask.split('.') #This converts the input to a list
+
+if subnet_mask != []:
+    net_mask = subnet_mask
+
+print(len(net_mask))
+
+net_mask = ','.join(net_mask)
+
+print(len(net_mask))
+
+#for items in net_mask:
+#    items = int(items)
