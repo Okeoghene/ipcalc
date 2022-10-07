@@ -1,5 +1,5 @@
 ip_address = input('Enter ip address: ')
-vlsm = input('Enter VLSM: /')
+vlsm = int(input('Enter VLSM: /'))
 subnet_mask = input('Enter subnet mask: ')
 
 ip_address = ip_address.split('.')
