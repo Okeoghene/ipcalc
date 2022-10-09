@@ -1,17 +1,17 @@
-vlsm = int(input('Enter VLSM: /'))
+cidr = int(input('Enter CIDR: /'))
 subnet_mask = input('Enter subnet mask: ')
 
 values = [0, 128, 192, 224, 240, 248, 252, 254, 255]
 
-faulty_vlsm = False
+faulty_CIDR = False
 
-if vlsm == '' and subnet_mask == '': # Ensures that both the VLSM and Subnet Mask values are not null.
-    print('Please enter either vlsm or subnet mask')
+if cidr == '' and subnet_mask == '': # Ensures that both the CIDR and Subnet Mask values are not null.
+    print('Please enter either CIDR or subnet mask')
 else:
-    if vlsm ==  '':
-        faulty_vlsm = True # Confirms if the VLSM is a null value, if null the 'faulty_vlsm' is TRUE.
-    elif vlsm > 32 or vlsm < 0:
-        faulty_vlsm = True # Confirms if the VLSM is in a range of numbers 1:32, if not the 'faulty_vlsm' is TRUE.
+    if cidr ==  '':
+        faulty_CIDR = True # Confirms if the CIDR is a null value, if null the 'faulty_CIDR' is TRUE.
+    elif cidr > 32 or cidr < 0:
+        faulty_CIDR = True # Confirms if the CIDR is in a range of numbers 1:32, if not the 'faulty_CIDR' is TRUE.
     else:
         if subnet_mask == []:
             guilty_mask = True # Confirms if the SUBNET MASK is empty.

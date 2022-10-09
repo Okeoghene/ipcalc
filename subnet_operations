@@ -12,7 +12,7 @@ for digits in subnet_mask:
 print(mask_holder)
 subnet_mask = ''.join(mask_holder) #Converts the list to a string
 
-new_vlsm =subnet_mask.count('1') 
+new_cidr =subnet_mask.count('1') 
 
 print(subnet_mask.count('1')) #prints the number of the 1's in the binary
 print(len(subnet_mask))

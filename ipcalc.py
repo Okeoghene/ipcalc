@@ -1,5 +1,5 @@
 ip_address = input('Enter ip address: ')
-vlsm = int(input('Enter VLSM: /'))
+cidr = int(input('Enter CIDR: /'))
 subnet_mask = input('Enter subnet mask: ')
 
 ip_address = ip_address.split('.')
@@ -17,6 +17,3 @@ subnet_mask = mask_holder
 subnet_mask = ','.join(subnet_mask)
 
 print(subnet_mask)
-
-#def subnet_to_vlsm(subnet_mask):
-    

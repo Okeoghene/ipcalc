@@ -1,22 +1,21 @@
-ip_address = '7.168.1.5'
+ip_address = '7.168.256.5'
 ip_address = ip_address.split('.')
 
 guilty_ip = False
 verified_ip = []
 
-def ip_check(ip_address):
-    if ip_address == []:
-        guilty_ip = True
-    elif len(ip_address) != 4:
-        guilty_ip = True
+if ip_address == []:
+    guilty_ip = True
+elif len(ip_address) != 4:
+    guilty_ip = True
 
-    for items in ip_address:
-        if items == '':
+for items in ip_address:
+    if items == '':
+        guilty_ip = True
+    else:
+        items = int(items)
+        if items > 255:
             guilty_ip = True
-        else:
-            items = int(items)
-            if items > 255:
-                guilty_ip = True
 
-    if guilty_ip == True:
-        print('rexamine your ip address please')
+if guilty_ip == True:
+    print('rexamine your ip address please')

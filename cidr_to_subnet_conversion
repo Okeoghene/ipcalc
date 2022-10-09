@@ -1,9 +1,10 @@
-vlsm = 32
+cidr = 32
 values = values = [0, 128, 192, 224, 240, 248, 252, 254, 255]
 placeholder = [0,0,0,0]
 
-network_bits = vlsm % 8
-network_octect = vlsm // 8
+network_bits = cidr % 8
+network_octect = cidr // 8
+host_bits = 8 - network_bits
 
 c = list(range(network_octect))
 lenght = len(c)
@@ -11,7 +12,7 @@ lenght = len(c)
 for index in list(range(network_octect)):
     placeholder[index] = 255 
     
-if not(vlsm == 32 and network_bits == 0):
+if not(cidr == 32 and network_bits == 0):
     placeholder[lenght] = values[network_bits]
 
 print(placeholder)    
