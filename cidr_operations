@@ -1,36 +1,53 @@
-cidr = int(input('Enter CIDR: /'))
+cidr = input('Enter CIDR: /')
 subnet_mask = input('Enter subnet mask: ')
 
-values = [0, 128, 192, 224, 240, 248, 252, 254, 255]
 
-faulty_CIDR = False
+subnet_mask = subnet_mask.split('.') #Makes the SUBNET a list
 
-if cidr == '' and subnet_mask == '': # Ensures that both the CIDR and Subnet Mask values are not null.
-    print('Please enter either CIDR or subnet mask')
+
+values = [0, 128, 192, 224, 240, 248, 252, 254, 255] #It is used to define values in SUBNET MASK.
+mask_holder = [] #creates an empty list.
+verified_mask = [] #This holds the SUBNET MASK, if it is not faulty.
+guilty_ip = False #This turns true if the IP ADDRESS is faulty.
+faulty_CIDR = False #This turns true if the CIDR is faulty.
+guilty_mask = False #This turns true if the SUBNET MASK is faulty.
+
+if cidr ==  '':
+    faulty_CIDR = True # Confirms if the CIDR is a null value, if null the 'faulty_CIDR' is TRUE.
 else:
-    if cidr ==  '':
-        faulty_CIDR = True # Confirms if the CIDR is a null value, if null the 'faulty_CIDR' is TRUE.
-    elif cidr > 32 or cidr < 0:
+    cidr = int(cidr)
+    if cidr > 32 or cidr < 0:
         faulty_CIDR = True # Confirms if the CIDR is in a range of numbers 1:32, if not the 'faulty_CIDR' is TRUE.
-    else:
-        if subnet_mask == []:
-            guilty_mask = True # Confirms if the SUBNET MASK is empty.
 
-if len(subnet_mask) == 4: 
+
+if subnet_mask != [''] and len(subnet_mask) == 4: #Ensures that SUBBET MASK is not NULL and there are 4 octects.
     for val1, val2 in zip(subnet_mask, subnet_mask[1:]): # Compares values in SUBNET MASK with a consecuutive in the SUBNET.
-        if val1 == '':
-            guilty_mask = True # Confirms that there is no null value in subnet.
-        else:
-            val1 = int(val1) 
-            if val1 not in values:
-                guilty_mask = True  # Converts confirms that the values in SUBNET MASK are same as VALUES earlier defined.
-            elif val1 > 255:
-                guilty_mask = True # Ensures that no value in SUBNET MASK is greater than 255.
-            else:
-                val2 = int(val2)
-                if val1 < val2:
-                    guilty_mask = True # Verifies that the next value in SUBNET MASK is not greater than previous value.
-                elif val1 != 255 and val2 >0:  
-                    guilty_mask = True # Verifies that if any value of the subnet is != 255, the next value is !> 0.
+        if val1 >= val2 and val1 != '':
+            val1 = int(val1)
+            val2 = int(val2)
+            if (val1 in values and val1 <= 255) and (val1 != 255 and val2 == 0):
+                guilty_mask = True # Verifies that if any value of the subnet is != 255, the next value is !> 0.          
 else:
     guilty_mask = True # Confirms that there are 4 octets in the SUBNET MASK.
+
+if subnet_mask != ['']:
+    for digits in subnet_mask:
+        digits = int(digits)  #converts every digit in subnet mask to integers
+        digits = bin(digits).replace('0b','') #Converts the subnet from decimal to binary
+        mask_holder.append(digits)
+
+new_subnet_mask = ''.join(mask_holder) #Converts the list to a string
+new_cidr = new_subnet_mask.count('1') #This calculates the network bits SUBNET MASK (It should be same as the CIDR if available)
+#print(new_cidr)
+
+if guilty_mask == True and faulty_CIDR == True:
+    print('Please verify the subnet and or CIDR')
+
+if (faulty_CIDR == False and guilty_mask == False) and (new_cidr != cidr):    
+    print('Please confirm that you have correctly entered one of either CIDR or SUBNET MASK') #Confirms that the new CIDR is equal to the CIDR inputed
+
+'''if faulty_CIDR == False:
+    print(cidr)
+
+if guilty_mask == True:
+    print(new_cidr)'''
