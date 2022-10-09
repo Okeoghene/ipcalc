@@ -57,10 +57,6 @@ usable_host = host - 2
 if usable_host <= 0:
     usable_host = 0
 
-print(type(host_octect2))
-print(type(ip_address[lenght]))
-print(type(host_octect1))
-
 if cidr != 32:
     print(net_ip_placeholder, 'is the', host_octect2+1, 'network address in the subnet'
     "\nthe usable host range are as follows;", firstip,'-', lastip, 
@@ -72,3 +68,7 @@ else:
     '\n the usable host range are as follows;', net_ip_placeholder,'-', net_ip_placeholder, 
     "\nthe broadcast address is,", net_ip_placeholder, "the total number of host is,", host, 
     "\nthe number of usable host is,", usable_host)
+
+print(type(host_octect2))
+print(type(ip_address[lenght]))
+print(type(host_octect1))
