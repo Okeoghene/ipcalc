@@ -44,8 +44,8 @@ else:
 
 for val1, val2 in zip(subnet_mask[:3], subnet_mask[1:]): # Compares values in SUBNET MASK with a consecuutive in the SUBNET.
     if val1 >= val2 and val1 != '': #Ensures that the preceding values of subnet mask greater than its consecutive value.
-        val1 = int(val1) #
-        val2 = int(val2) #
+        val1 = int(val1) #converts the value of the subnet to integer
+        val2 = int(val2) #converts the value of the subnet to integer
         if val1 in values:
             if (val1 <= 255) and (val2 <=255):
                 if (val1 != 255 and val2 == 0):
@@ -84,37 +84,37 @@ if cidr !=32:
     host_octect1 = 2 ** host_bits1 #The 3rd step of the calculation for the size of the network address.
     network_octect = cidr // 8 #The quotient of this division is used to calculate the parts of the network that remain unchanged.
     c = list(range(network_octect)) #The list of the unchanged part of the network address that remains unchanged.
-    lenght = len(c) #The number of octects that will not change.
+    lenght = len(c) #The number of octects that will not change. It can also determine the part of the ip address that would be altered to reflect to last bit of the network address.
     host_octect2 = int(ip_address[lenght]) // host_octect1 #Used to calculate the exact network address the ip belongs to.
 
 
     for index in list(range(network_octect)):
-        net_ip_placeholder[index] = ip_address[index] #This declares that part of the ip address to remain unchanged.
+        net_ip_placeholder[index] = ip_address[index] #This declares that part of the network address to remain unchanged.
 
     if int(ip_address[lenght])< host_octect1:
-        net_ip_placeholder[lenght] = 0 #
+        net_ip_placeholder[lenght] = 0 #If the size of the network is greater than the value in [Lenght], the value is replaced with 0.
     elif int(ip_address[lenght])> host_octect1:
-            net_ip_placeholder[lenght] = host_octect2 * host_octect1
+            net_ip_placeholder[lenght] = host_octect2 * host_octect1 #If the size of the network is smaller than the value in [Lenght]; the value of lenght is replaced by amount of times the size of the network can divide the value of lenght muliplied by size of the network.
 
 
     for index in list(range(network_octect)):
-        broadcast_holder[index] = ip_address[index]
+        broadcast_holder[index] = ip_address[index]  #This declares that part of the broadcast address to remain unchanged.
 
-    broadcast_holder[lenght] = ((host_octect2 + 1) * host_octect1) - 1
+    broadcast_holder[lenght] = ((host_octect2 + 1) * host_octect1) - 1  #This declares the value for the last part of the broadcast address to remain unchanged.
 
     for index in list(range(network_octect+1)):
-        firstip[index] = net_ip_placeholder[index]
+        firstip[index] = net_ip_placeholder[index] #This declares that part of the first host address to remain unchanged.
 
     if cidr >= 24:
-        firstip[lenght] = net_ip_placeholder[lenght] +1
+        firstip[lenght] = net_ip_placeholder[lenght] +1 #This declares the value for the last part of the first usable address.
     else:
         firstip[3] = 1
 
-    for index in list(range(network_octect+1)):
-        lastip[index] = broadcast_holder[index]
+    for index in list(range(network_octect+1)): 
+        lastip[index] = broadcast_holder[index] #This declares that part of the last host address to remain unchanged.
 
     if cidr >= 24:
-        lastip[lenght] = broadcast_holder[lenght] -1
+        lastip[lenght] = broadcast_holder[lenght] -1 #This declares the value for the last part of the last usable address.
     else:
         lastip[3] = 255
 
@@ -122,9 +122,9 @@ else:
     net_ip_placeholder = ip_address
 
 
-host = 2 ** (32-cidr)
+host = 2 ** (32-cidr) #the number of host in a subnet
 
-usable_host = host - 2
+usable_host = host - 2 #the number of usable host
 
 if usable_host <= 0:
     usable_host = 0
