@@ -77,13 +77,14 @@ if guilty_mask == False:
     cidr = new_cidr
 
 if cidr !=32:
-    network_bits = cidr % 8
-    network_octect = cidr // 8
-    host_bits1 = 8 - network_bits
-    c = list(range(network_octect))
-    lenght = len(c)
-    host_octect1 = 2 ** host_bits1
-    host_octect2 = int(ip_address[lenght]) // host_octect1
+    network_bits = cidr % 8 #The remainder of this division is used to calculate the size of network address.
+    host_bits1 = 8 - network_bits #The 2nd step of the calculation for the size of the network address.
+    host_octect1 = 2 ** host_bits1 #The 3rd step of the calculation for the size of the network address.
+    network_octect = cidr // 8 #The quotient of this division is used to calculate the parts of the network that remain unchanged.
+    c = list(range(network_octect)) #The list of the unchanged part of the network address that remains unchanged.
+    lenght = len(c) #The number of octects that will not change.
+    host_octect2 = int(ip_address[lenght]) // host_octect1 #Used to calculate the exact network address the ip belongs to.
+
 
     for index in list(range(network_octect)):
         net_ip_placeholder[index] = ip_address[index]
