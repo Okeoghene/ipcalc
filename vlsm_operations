@@ -1,0 +1,36 @@
+vlsm = int(input('Enter VLSM: /'))
+subnet_mask = input('Enter subnet mask: ')
+
+values = [0, 128, 192, 224, 240, 248, 252, 254, 255]
+
+faulty_vlsm = False
+
+if vlsm == '' and subnet_mask == '': # Ensures that both the VLSM and Subnet Mask values are not null.
+    print('Please enter either vlsm or subnet mask')
+else:
+    if vlsm ==  '':
+        faulty_vlsm = True # Confirms if the VLSM is a null value, if null the 'faulty_vlsm' is TRUE.
+    elif vlsm > 32 or vlsm < 0:
+        faulty_vlsm = True # Confirms if the VLSM is in a range of numbers 1:32, if not the 'faulty_vlsm' is TRUE.
+    else:
+        if subnet_mask == []:
+            guilty_mask = True # Confirms if the SUBNET MASK is empty.
+
+if len(subnet_mask) == 4: 
+    for val1, val2 in zip(subnet_mask, subnet_mask[1:]): # Compares values in SUBNET MASK with a consecuutive in the SUBNET.
+        if val1 == '':
+            guilty_mask = True # Confirms that there is no null value in subnet.
+        else:
+            val1 = int(val1) 
+            if val1 not in values:
+                guilty_mask = True  # Converts confirms that the values in SUBNET MASK are same as VALUES earlier defined.
+            elif val1 > 255:
+                guilty_mask = True # Ensures that no value in SUBNET MASK is greater than 255.
+            else:
+                val2 = int(val2)
+                if val1 < val2:
+                    guilty_mask = True # Verifies that the next value in SUBNET MASK is not greater than previous value.
+                elif val1 != 255 and val2 >0:  
+                    guilty_mask = True # Verifies that if any value of the subnet is != 255, the next value is !> 0.
+else:
+    guilty_mask = True # Confirms that there are 4 octets in the SUBNET MASK.
