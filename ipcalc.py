@@ -43,9 +43,9 @@ else:
 
 
 for val1, val2 in zip(subnet_mask[:3], subnet_mask[1:]): # Compares values in SUBNET MASK with a consecuutive in the SUBNET.
-    if val1 >= val2 and val1 != '':
-        val1 = int(val1)
-        val2 = int(val2)
+    if val1 >= val2 and val1 != '': #Ensures that the preceding values of subnet mask greater than its consecutive value.
+        val1 = int(val1) #
+        val2 = int(val2) #
         if val1 in values:
             if (val1 <= 255) and (val2 <=255):
                 if (val1 != 255 and val2 == 0):
@@ -75,6 +75,8 @@ if (faulty_CIDR == False and guilty_mask == False) and (new_cidr != cidr):
 
 if guilty_mask == False:
     cidr = new_cidr
+    cidr = int(cidr)
+    print(cidr)
 
 if cidr !=32:
     network_bits = cidr % 8 #The remainder of this division is used to calculate the size of network address.
@@ -87,10 +89,10 @@ if cidr !=32:
 
 
     for index in list(range(network_octect)):
-        net_ip_placeholder[index] = ip_address[index]
+        net_ip_placeholder[index] = ip_address[index] #This declares that part of the ip address to remain unchanged.
 
     if int(ip_address[lenght])< host_octect1:
-        net_ip_placeholder[lenght] = 0
+        net_ip_placeholder[lenght] = 0 #
     elif int(ip_address[lenght])> host_octect1:
             net_ip_placeholder[lenght] = host_octect2 * host_octect1
 
