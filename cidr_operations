@@ -20,17 +20,23 @@ else:
         faulty_CIDR = True # Confirms if the CIDR is in a range of numbers 1:32, if not the 'faulty_CIDR' is TRUE.
 
 
-if subnet_mask != [''] and len(subnet_mask) == 4: #Ensures that SUBBET MASK is not NULL and there are 4 octects.
-    for val1, val2 in zip(subnet_mask, subnet_mask[1:]): # Compares values in SUBNET MASK with a consecuutive in the SUBNET.
-        if val1 >= val2 and val1 != '':
-            val1 = int(val1)
-            val2 = int(val2)
-            if (val1 in values and val1 <= 255) and (val1 != 255 and val2 == 0):
-                guilty_mask = True # Verifies that if any value of the subnet is != 255, the next value is !> 0.          
+for val1, val2 in zip(subnet_mask[:3], subnet_mask[1:]): # Compares values in SUBNET MASK with a consecuutive in the SUBNET.
+    if val1 >= val2 and val1 != '':
+        val1 = int(val1)
+        val2 = int(val2)
+        if val1 in values:
+            if (val1 <= 255) and (val2 <=255):
+                if (val1 != 255 and val2 == 0):
+                    guilty_mask = False # Verifies that if any value of the subnet is != 255, the next value is !> 0.
+                else:
+                    guilty_mask = True          
 else:
     guilty_mask = True # Confirms that there are 4 octets in the SUBNET MASK.
 
-if subnet_mask != ['']:
+if len(subnet_mask) == 4 and subnet_mask != ['']: # Ensures that SUBBET MASK is not NULL and there are 4 octects.
+    guilty_mask == False
+
+if guilty_mask == False:
     for digits in subnet_mask:
         digits = int(digits)  #converts every digit in subnet mask to integers
         digits = bin(digits).replace('0b','') #Converts the subnet from decimal to binary
@@ -38,7 +44,6 @@ if subnet_mask != ['']:
 
 new_subnet_mask = ''.join(mask_holder) #Converts the list to a string
 new_cidr = new_subnet_mask.count('1') #This calculates the network bits SUBNET MASK (It should be same as the CIDR if available)
-#print(new_cidr)
 
 if guilty_mask == True and faulty_CIDR == True:
     print('Please verify the subnet and or CIDR')
