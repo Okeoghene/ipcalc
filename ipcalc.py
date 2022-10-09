@@ -116,7 +116,7 @@ if cidr !=32:
     if cidr >= 24:
         lastip[lenght] = broadcast_holder[lenght] -1 #This declares the value for the last part of the last usable address.
     else:
-        lastip[3] = 255
+        lastip[3] = 254
 
 else:
     net_ip_placeholder = ip_address
