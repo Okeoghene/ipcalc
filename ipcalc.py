@@ -8,6 +8,7 @@ subnet_mask = subnet_mask.split('.') #Makes the SUBNET a list
 
 
 values = [0, 128, 192, 224, 240, 248, 252, 254, 255] #It is used to define values in SUBNET MASK.
+placeholder = [0,0,0,0] #This is used to hold the value for subnet mask.
 mask_holder = [] #creates an empty list.
 verified_mask = [] #This holds the SUBNET MASK, if it is not faulty.
 guilty_ip = False #This turns true if the IP ADDRESS is faulty.
@@ -42,41 +43,44 @@ else:
         faulty_CIDR = True # Confirms if the CIDR is in a range of numbers 1:32, if not the 'faulty_CIDR' is TRUE.
 
 
-for val1, val2 in zip(subnet_mask[:3], subnet_mask[1:]): # Compares values in SUBNET MASK with a consecuutive in the SUBNET.
-    if val1 >= val2 and val1 != '': #Ensures that the preceding values of subnet mask greater than its consecutive value.
-        val1 = int(val1) #converts the value of the subnet to integer
-        val2 = int(val2) #converts the value of the subnet to integer
-        if val1 in values:
-            if (val1 <= 255) and (val2 <=255):
-                if (val1 != 255 and val2 == 0):
-                    guilty_mask = False # Verifies that if any value of the subnet is != 255, the next value is !> 0.
-                else:
-                    guilty_mask = True          
-else:
-    guilty_mask = True # Confirms that there are 4 octets in the SUBNET MASK.
+if subnet_mask != [''] and len(subnet_mask) == 4:
 
-if len(subnet_mask) == 4 and subnet_mask != ['']: # Ensures that SUBBET MASK is not NULL and there are 4 octects.
-    guilty_mask == False
+    for val1, val2 in zip(subnet_mask[:3], subnet_mask[1:]): # Compares values in SUBNET MASK with a consecuutive in the SUBNET.
+        val1 = int(val1) #converts the value of the subnet to integer.
+        val2 = int(val2) #converts the value of the subnet to integer.
+
+        if val1 in values: #Ensures that the preceding values of subnet mask greater than its consecutive value.
+            
+            if val1 >= val2: #Ensures that the SUBNET is in descending order.
+    
+                if (val1 == 255 and val2<= 255) or (val1 != 255 and val2 == 0): #Ensures that the SUBNET is in descending order, and if the first value is !255 then following value is 0.
+                    guilty_mask = False
+
+                else:
+                    guilty_mask = True # Confirms that there are 4 octets in the SUBNET MASK, else it is a bad subnet mask.
+
+            else:
+                guilty_mask = True # Confirms that the subnet mask is in descending.
+        else:
+            guilty_mask = True # Confirms that the subnet mask is in descending.
+else:
+    guilty_mask = True # Confirms that the subnet mask is in descending.
 
 if guilty_mask == False:
-    for digits in subnet_mask:
-        digits = int(digits)  #converts every digit in subnet mask to integers
-        digits = bin(digits).replace('0b','') #Converts the subnet from decimal to binary
-        mask_holder.append(digits)
+    for values in subnet_mask:
+        values = int(values)
+        values = bin(values).replace('0b','') 
+        mask_holder.append(values)
+        subnet_mask = ''.join(mask_holder)
 
-new_subnet_mask = ''.join(mask_holder) #Converts the list to a string
-new_cidr = new_subnet_mask.count('1') #This calculates the network bits SUBNET MASK (It should be same as the CIDR if available)
+if (faulty_CIDR == False and guilty_mask == False) and (subnet_mask.count('1') != cidr):    
+    print('Please confirm that you have correctly entered one of either CIDR or SUBNET MASK') #Confirms that the new CIDR is equal to the CIDR inputed
 
 if guilty_mask == True and faulty_CIDR == True:
     print('Please verify the subnet and or CIDR')
 
-if (faulty_CIDR == False and guilty_mask == False) and (new_cidr != cidr):    
-    print('Please confirm that you have correctly entered one of either CIDR or SUBNET MASK') #Confirms that the new CIDR is equal to the CIDR inputed
-
-if guilty_mask == False:
-    cidr = new_cidr
-    cidr = int(cidr)
-    print(cidr)
+if faulty_CIDR == True and guilty_mask == False:
+    cidr = subnet_mask.count('1')
 
 if cidr !=32:
     network_bits = cidr % 8 #The remainder of this division is used to calculate the size of network address.
@@ -85,7 +89,7 @@ if cidr !=32:
     network_octect = cidr // 8 #The quotient of this division is used to calculate the parts of the network that remain unchanged.
     c = list(range(network_octect)) #The list of the unchanged part of the network address that remains unchanged.
     lenght = len(c) #The number of octects that will not change. It can also determine the part of the ip address that would be altered to reflect to last bit of the network address.
-    host_octect2 = int(ip_address[lenght]) // host_octect1 #Used to calculate the exact network address the ip belongs to.
+    host_octect2 = int(ip_address[lenght]) // host_octect1 #Used to calculate the exact network address the ip address belongs to.
 
 
     for index in list(range(network_octect)):
@@ -129,14 +133,39 @@ usable_host = host - 2 #the number of usable host
 if usable_host <= 0:
     usable_host = 0
 
-if cidr != 32:
+if cidr == 31:
     print(net_ip_placeholder, 'is the', host_octect2+1, 'network address in the subnet'
-    "\nthe usable host range are as follows;", firstip,'-', lastip, 
+    "\nthe usable host range are as follows;", firstip,'-', firstip, 
     "\nthe broadcast address is,", broadcast_holder, 
     "\nthe total number of host is,", host,  
     "\nthe number of usable host is,", usable_host)
-else: 
+elif cidr == 32: 
     print(net_ip_placeholder, 'is the network address in the subnet'
     '\n the usable host range are as follows;', net_ip_placeholder,'-', net_ip_placeholder, 
-    "\nthe broadcast address is,", net_ip_placeholder, "the total number of host is,", host, 
+    "\nthe broadcast address is,", net_ip_placeholder, 
+    "\nthe total number of host is,", host, 
     "\nthe number of usable host is,", usable_host)
+elif cidr <= 30:
+    print(net_ip_placeholder, 'is the network address in the subnet'
+    '\n the usable host range are as follows;', firstip,'-', lastip, 
+    "\nthe broadcast address is,", net_ip_placeholder, 
+    "\nthe total number of host is,", host, 
+    "\nthe number of usable host is,", usable_host)
+
+network_bits = cidr % 8
+network_octect = cidr // 8
+host_bits1 = 8 - network_bits
+
+c = list(range(network_octect))
+lenght = len(c)
+
+
+if guilty_mask == True and faulty_CIDR == False:
+    for index in list(range(network_octect)):
+        placeholder[index] = 255 
+    if not(cidr == 32 and network_bits == 0):
+        placeholder[lenght] = values[network_bits]
+    print('The subnet mask should be', placeholder)
+
+if guilty_mask == True and faulty_CIDR == False:
+    print('This should be the CIDR', cidr)
