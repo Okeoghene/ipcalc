@@ -125,7 +125,6 @@ if cidr !=32:
 else:
     net_ip_placeholder = ip_address
 
-
 host = 2 ** (32-cidr) #the number of host in a subnet
 
 usable_host = host - 2 #the number of usable host
@@ -159,7 +158,6 @@ host_bits1 = 8 - network_bits
 c = list(range(network_octect))
 lenght = len(c)
 
-
 if guilty_mask == True and faulty_CIDR == False:
     for index in list(range(network_octect)):
         placeholder[index] = 255 
@@ -167,5 +165,5 @@ if guilty_mask == True and faulty_CIDR == False:
         placeholder[lenght] = values[network_bits]
     print('The subnet mask should be', placeholder)
 
-if guilty_mask == True and faulty_CIDR == False:
-    print('This should be the CIDR', cidr)
+if guilty_mask == False and faulty_CIDR == True:
+    print('The CIDR should be /', cidr)
